@@ -1,0 +1,40 @@
+import unittest
+from webbrowser import BaseBrowser
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import WebDriverWait
+import time
+
+url = "https://www.tokopedia.com/"
+
+class Test_search_features(unittest.TestCase):
+
+    def setUp(self):
+        self.browser = webdriver.Chrome(ChromeDriverManager().install())
+        
+
+    def test_exist_data (self):
+        browser = self.browser
+        browser.get(url)
+        time.sleep(1)
+        
+        #For search feature   
+        browser.find_element(By.XPATH, "//input[@data-unify = 'Search']").send_keys("celengan")
+        time.sleep(1)
+        browser.find_element(By.CLASS_NAME, "css-1czin5k").click()
+        time.sleep(1)
+
+        #validation
+        data_massage = browser.find_element(By.TAG_NAME, "h5").text
+
+        self.assertEqual(data_massage, 'Filter')
+        
+
+    def tearDown(self):
+        self.browser.close()
+
+if __name__ == "__main__": 
+    unittest.main()
